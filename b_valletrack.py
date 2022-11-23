@@ -59,7 +59,7 @@ def load_commits(cwd):
 
 
 def git_select_version(id, cwd):
-    subprocess.check_output(['git', 'reset', '--hard', id], cwd=cwd)
+    subprocess.check_output(['git', 'checkout',  id], cwd=cwd)
     bpy.ops.wm.revert_mainfile()
     bpy.context.scene.commits.clear()
 
@@ -88,7 +88,7 @@ class CommitData(bpy.types.PropertyGroup):
            item = items[k]
            
            
-           if item['refs'] != "":
+           if "HEAD" in item['refs']:
                CommitData.__head = item
                
            if item["commit"] not in parents:
@@ -323,7 +323,7 @@ class OBJECT_PT_version_panel(bpy.types.Panel):
             col.label(text="Lista de versiones")
             g = context.scene.commits
             for c in g.get_rama():
-                icon = 'PROP_ON' if c["refs"] != "" else 'PROP_OFF'
+                icon = 'PROP_ON' if "HEAD" in c["refs"] else 'PROP_OFF'
                 ops = col.operator("valleapp.set_version", text=c["subject"], icon=icon)
                 ops.commit = c["commit"]
                 ops.op = ""
