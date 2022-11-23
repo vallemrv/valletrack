@@ -59,7 +59,7 @@ def load_commits(cwd):
 
 
 def git_select_version(id, cwd):
-    subprocess.check_output(['git', 'reset', '--hard' id], cwd=cwd)
+    subprocess.check_output(['git', 'reset', '--hard', id], cwd=cwd)
     bpy.ops.wm.revert_mainfile()
     bpy.context.scene.commits.clear()
 
