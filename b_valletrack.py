@@ -2,6 +2,7 @@ bl_info = {
     "name": "ValleTrack",
     "author": "valle.mrv",
     "version": (1, 5, 1),
+    "blender": (3, 0, 0),
     "location": "VIEW3D",
     "description": "Control simple de versiones git lsf",
     "warning": "",
