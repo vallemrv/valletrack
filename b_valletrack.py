@@ -2,7 +2,6 @@ bl_info = {
     "name": "ValleTrack",
     "author": "valle.mrv",
     "version": (1, 5, 1),
-    "blender": (3, 3, 1),
     "location": "VIEW3D",
     "description": "Control simple de versiones git lsf",
     "warning": "",
@@ -27,8 +26,11 @@ def clean_signos(value):
     return value
 
 def get_global_params(p):
-    lst = subprocess.check_output(['git','config', '--global',  '--get',  "user."+p]).decode().strip()
-    return lst
+    try:
+        lst = subprocess.check_output(['git','config', '--global',  '--get',  "user."+p]).decode().strip()
+        return lst
+    except:
+        return ""
 
 def set_global_params(p, v):
     subprocess.check_output(['git','config', '--global',  "user."+p, v])
@@ -48,6 +50,7 @@ def git_commit(v, cwd):
     bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
     git_add(cwd)
     subprocess.check_output(['git','commit', '-m',  v], cwd=cwd)
+    bpy.context.scene.commits.clear()
     
             
 def load_commits(cwd):
