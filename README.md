@@ -3,4 +3,4 @@ Addon de Blender para utilizar comandos git en local dentro de blender y tener m
 
 #Requeriientos
 Solo se necesita tener instalado git en el ordenador con las variables de entorno configuradas.
-esta probado en Linux y Mac. Si hay problemas en windows hacermelo saber gracias.
+esta probado en Linux, Mac y Windows. Si hay problemas hacermelo saber, gracias.
