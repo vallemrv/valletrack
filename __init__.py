@@ -1,3 +1,13 @@
+import bpy
+from .ui.propiedades import PROPS, CommitData
+from .ui.menus import CustomMenu
+from .ui.panels import (InitTrackPanel, VersionPanel, UserPanel)
+from .ui.operadores import (SaveOperator, 
+                           InitOperator, 
+                           AddOperator, SetGitUserOperator,
+                           CommitVersionOperator, SwitchGitVersionOperator,
+                           RefreshCommitsOperator)      
+
 bl_info = {
     "name": "ValleTrack",
     "author": "valle.mrv",
@@ -10,15 +20,7 @@ bl_info = {
     "category": "Development",
 }
 
-import bpy
-from ui.propiedades import PROPS, CommitData
-from ui.menus import CustomMenu
-from ui.panels import (InitTrackPanel, VersionPanel, UserPanel)
-from ui.operadores import (SaveOperator, 
-                           InitOperator, 
-                           AddOperator, SetGitUserOperator,
-                           CommitVersionOperator, SwitchGitVersionOperator,
-                           RefreshCommitsOperator)      
+
 
 
 CLASSES = [

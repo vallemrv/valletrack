@@ -1,5 +1,5 @@
 import bpy
-from propiedades.commits import CommitData
+from .commits import CommitData
 
 PROPS = [
     ('user_name', bpy.props.StringProperty()),

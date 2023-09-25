@@ -1,10 +1,10 @@
 import bpy
 from bpy.types import Operator
-from ui.menus import CustomMenu
-from tools.git_command import (git_init, git_add,
+from ..menus import CustomMenu
+from ...tools.git_command import (git_init, git_add,
                                git_commit, set_global_params,
                                git_select_version, git_status)
-from tools.utilidades import save_mainfile
+from ...tools.utilidades import save_mainfile
 
 
 class InitOperator(Operator):
@@ -124,11 +124,11 @@ class SwitchGitVersionOperator(Operator):
         return {'FINISHED'}
 
     
-    class RefreshCommitsOperator(Operator):
-    
-        bl_idname = 'valleapp.refresh_commits'
-        bl_label = 'Refresh Commits'
-            
-        def execute(self, context):
-            context.scene.commits.clear()
-            return {'FINISHED'}
+class RefreshCommitsOperator(Operator):
+
+    bl_idname = 'valleapp.refresh_commits'
+    bl_label = 'Refresh Commits'
+        
+    def execute(self, context):
+        context.scene.commits.clear()
+        return {'FINISHED'}

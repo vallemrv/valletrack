@@ -1,7 +1,7 @@
 import bpy
 from bpy.types import Panel
 import os
-from tools.git_command import get_global_params, load_commits
+from ...tools.git_command import get_global_params, load_commits
 
 class InitTrackPanel(Panel):
     bl_label = 'Initialize Tracking'
