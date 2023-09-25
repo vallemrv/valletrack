@@ -5,7 +5,8 @@ from .ui.panels import (InitTrackPanel, VersionPanel, UserPanel)
 from .ui.operadores import (SaveOperator, 
                            InitOperator, 
                            AddOperator, SetGitUserOperator,
-                           CommitVersionOperator, SwitchGitVersionOperator,
+                           CommitVersionOperator, 
+                           SwitchGitVersionOperator,
                            RefreshCommitsOperator)      
 
 bl_info = {
