@@ -1,9 +1,9 @@
 import bpy
 from bpy.types import Panel
 import os
-from ...tools.git_command import get_global_params, load_commits
+from ..tools.git_command import get_global_params, load_commits
 
-class InitTrackPanel(Panel):
+class VALLETRACK_PT_InitTrackPanel(Panel):
     bl_label = 'Initialize Tracking'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -27,7 +27,8 @@ class InitTrackPanel(Panel):
                 layout.operator('valleapp.init_git_repo', text="Inicializar Repositorio")
 
 
-class VersionPanel(Panel):
+class VALLETRACK_PT_VersionPanel(Panel):
+    error_message = ""
     bl_label = 'Versiones'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -56,20 +57,20 @@ class VersionPanel(Panel):
         col = self.layout.column()
         col.label(text="Datos de la versión")
         col.label(text="Descripción corta:")
-        col.prop(context.scene, "name_version", text="")
-        col.operator("valleapp.add_version", text="Nueva versión")
+        col.prop(context.scene, "commit_message", text="")
+        col.operator("valleapp.commit_version", text="Nueva versión")
 
     def draw_version_list(self, context, commits):
         col = self.layout.column()
         col.label(text="Ramas")
         row = col.row()
         row.prop(context.scene, "branch", text="")
-        row.operator("valleapp.refresh", text="Refrescar")
+        row.operator("valleapp.refresh_commits", text="Refrescar")
         col.label(text="Lista de versiones")
 
         for c in commits.get_rama():
             icon = 'PROP_ON' if "HEAD" in c["refs"] else 'PROP_OFF'
-            ops = col.operator("valleapp.set_version", text=c["subject"], icon=icon)
+            ops = col.operator("valleapp.switch_git_version", text=c["subject"], icon=icon)
             ops.commit = c["commit"]
             ops.op = ""
 
@@ -79,9 +80,7 @@ class VersionPanel(Panel):
         if commits.has_commits():
             self.draw_version_list(context, commits)
 
-
-class UserPanel(Panel):
-    
+class VALLETRACK_PT_UserPanel(Panel):
     bl_label = 'User Data'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'

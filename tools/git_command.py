@@ -42,7 +42,7 @@ def git_add(cwd):
         return False
     
 
-def git_commit(cwd, message):
+def git_commit(message, cwd):
     try:
         if bpy.context.scene.commits.has_ramas():
             bpy.context.scene.branch = "0"
@@ -53,7 +53,7 @@ def git_commit(cwd, message):
 
         if not git_add(cwd):
             return False
-    
+       
         subprocess.check_output(['git','commit', '-m', message], cwd=cwd)
         return True
     except subprocess.CalledProcessError as e:
@@ -68,11 +68,13 @@ def load_commits(cwd):
         if int(count) > 0:
             cmd = ['git', 'log', '--pretty=format:"%h": {"commit": "%h", "parent": "%p", "refs": "%D", "subject": "%s"},', '--reflog']
             commits = subprocess.check_output(cmd, cwd=cwd).decode().strip()
-            bpy.context.scene.commits.add_commits(commits)
+            bpy.context.scene.commits.load_commits(commits)
+       
+        return True
     except subprocess.CalledProcessError as e:
         print(f'Error al cargar commits: {e.output}')
         traceback.print_exc()
-
+        return False
 
 def git_select_version(id, cwd):
     try:

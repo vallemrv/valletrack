@@ -1,10 +1,10 @@
 import bpy
 from bpy.types import Operator
-from ..menus import CustomMenu
-from ...tools.git_command import (git_init, git_add,
+from .menus import CustomMenu
+from ..tools.git_command import (git_init,
                                git_commit, set_global_params,
                                git_select_version, git_status)
-from ...tools.utilidades import save_mainfile
+from ..tools.utilidades import save_mainfile
 
 
 class InitOperator(Operator):
@@ -24,23 +24,6 @@ class InitOperator(Operator):
     
 
     
-class AddOperator(Operator):
-    
-    bl_idname = 'valleapp.add_git_repo'
-    bl_label = 'Add'
-         
-    def execute(self, context):
-        mainpath = bpy.path.abspath('//')
-        
-        if mainpath != '':
-            success = git_add(mainpath)
-            if not success:
-                self.report({'ERROR'}, "Error al añadir los archivos al repositorio Git.")
-            
-       
-        return {'FINISHED'}
-    
-
 class CommitVersionOperator(Operator):
     
     bl_idname = 'valleapp.commit_version'
@@ -96,7 +79,12 @@ class SwitchGitVersionOperator(Operator):
     
     def execute(self, context):
         cwd = bpy.path.abspath('//')
-        current_head = context.scene.commits.get_head()["commit"]
+        current_head = context.scene.commits.get_head()
+        is_dirty = bpy.data.is_dirty
+
+        if self.commit == current_head["commit"]:
+            return {'FINISHED'}
+        
         
         status, success = git_status(cwd)
         
@@ -104,23 +92,31 @@ class SwitchGitVersionOperator(Operator):
             self.report({'ERROR'}, "Error al obtener el estado de Git.")
             return {'CANCELLED'}
         
-        if self.commit != current_head:
-            is_dirty = bpy.data.is_dirty
-
-            if (is_dirty or status != "") and self.op not in ["save", "cancel", "des"]:
-                bpy.ops.wm.call_menu(name=CustomMenu.bl_idname)
-            elif self.op == "save":
-                cm = context.scene.commits.get_head()
-                if git_commit(cm["subject"] + " *", cwd):
-                    git_select_version(self.commit, cwd)
+        
+        if is_dirty or status:
+            if self.op in ["save", "cancel", "des"]:
+                if self.op == "save":
+                    commit_message = context.scene.commit_message
+                    if commit_message != "":
+                        context.scene.commit_message = ""
+                        success = git_commit(commit_message, cwd)
+                        if not success:
+                            self.report({'ERROR'}, "Error al realizar el commit.")
+                            return {'CANCELLED'}
+                        else:
+                            git_select_version(self.commit, cwd)
+                    else:
+                        context.scene.commit_message = current_head["subject"] + " *"
+                          
+                elif self.op == "cancel":
+                    return {'FINISHED'}
                 else:
-                    self.report({'ERROR'}, "Error al realizar el commit.")
-                    return {'CANCELLED'}
-            elif self.op == "cancel":
-                return {'FINISHED'}
-            elif (not is_dirty and git_status == "") or self.op == "des":
-                git_select_version(self.commit, cwd)
-                
+                    git_select_version(self.commit, cwd)
+            else:
+                bpy.ops.wm.call_menu(name=CustomMenu.bl_idname)
+        else:
+            git_select_version(self.commit, cwd)
+            
         return {'FINISHED'}
 
     

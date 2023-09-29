@@ -1,6 +1,7 @@
 import bpy
 import json
 
+
 class CommitData(bpy.types.PropertyGroup):
     
     __ramas = []
@@ -15,16 +16,13 @@ class CommitData(bpy.types.PropertyGroup):
             return self.crear_rama(items[item["parent"]], items, rama)
         
         
-         
-     
-    def add_commits(self, commits):
+    def load_commits(self, commits):
        items = json.loads("{"+commits[:-1]+"}")
        ramas = []
        parents = []
        
        for k in items.keys():
            item = items[k]
-           
            
            if "HEAD" in item['refs']:
                CommitData.__head = item
@@ -61,5 +59,6 @@ class CommitData(bpy.types.PropertyGroup):
         items = []
         for i in range(0, len(CommitData.__ramas)):
             items.append((str(i), "Rama "+str(i+1), "Rama "+str(i+1)))
-        return items     
+        return items  
+    
                 

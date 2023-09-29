@@ -1,10 +1,10 @@
 import bpy
 from .ui.propiedades import PROPS, CommitData
 from .ui.menus import CustomMenu
-from .ui.panels import (InitTrackPanel, VersionPanel, UserPanel)
+from .ui.panels import (VALLETRACK_PT_InitTrackPanel, 
+                        VALLETRACK_PT_VersionPanel, VALLETRACK_PT_UserPanel)
 from .ui.operadores import (SaveOperator, 
-                           InitOperator, 
-                           AddOperator, SetGitUserOperator,
+                           InitOperator,  SetGitUserOperator,
                            CommitVersionOperator, 
                            SwitchGitVersionOperator,
                            RefreshCommitsOperator)      
@@ -12,7 +12,7 @@ from .ui.operadores import (SaveOperator,
 bl_info = {
     "name": "ValleTrack",
     "author": "valle.mrv",
-    "version": (1, 5, 1),
+    "version": (1, 5, 5),
     "blender": (3, 0, 0),
     "location": "VIEW3D",
     "description": "Control simple de versiones git lsf",
@@ -27,16 +27,15 @@ bl_info = {
 CLASSES = [
     SaveOperator,
     InitOperator,
-    AddOperator,
     SetGitUserOperator,
     CommitVersionOperator,
     SwitchGitVersionOperator,
     RefreshCommitsOperator,
     CommitData,
     CustomMenu,
-    InitTrackPanel,
-    VersionPanel,
-    UserPanel,
+    VALLETRACK_PT_InitTrackPanel,
+    VALLETRACK_PT_VersionPanel,
+    VALLETRACK_PT_UserPanel,
 ]
       
 def register():
